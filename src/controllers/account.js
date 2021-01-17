@@ -30,16 +30,35 @@ const transfersAmount = async (req, res) => {
     const { recipientsName, amount } = req.body
     const name = recipientsName
     const newBalance1 = Account.balance - amount
-    const newBalance2 = Account.balance + amount 
-    let transferredAmount = await Account.findByIdAndUpdate(id, (newBalance1) )
-    let amountReceived = await Account.findOneAndUpdate(name, (newBalance2) )
+    const newBalance2 = Account.balance + amount
+    let transferredAmount = await Account.findByIdAndUpdate(id, (newBalance1))
+    let amountReceived = await Account.findOneAndUpdate(name, (newBalance2))
         .then(() => {
             res.status(201).json({ message: `TED completed` })
         })
         .catch((err) => { res.status(400).json(err) })
 }
 
+const withdraw = async (req, res) => {
+    const { id } = req.params
+    const { amount } = req.body
+    try {
+        const newBalance = await Account.findByIdAndUpdate(id, Account.balance - amount)
+        if (Account.balance < amount) {
+            return res.status(400).json("insufficient funds")
+        }
+        else {
+
+            return res.status(200).json("successful operation")
+        }
+    }
+    catch (e) {
+        return res.status(400).json(e)
+    }
+}
+
 module.exports = {
     createAccount,
-    transfersAmount
+    transfersAmount,
+    withdraw
 }
