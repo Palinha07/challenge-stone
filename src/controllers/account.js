@@ -1,6 +1,8 @@
+const { req, res } = require("express")
 const Account = require('../models/account')
 const bcrypt = require("bcrypt")
 const { passwordHashed } = require("../helpers/password")
+const mongoose = require("mongoose")
 
 const createAccount = async (req, res, next) => {
     const { name, email, password } = req.body
