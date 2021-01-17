@@ -3,5 +3,6 @@ const router = express.Router()
 const accountController = require("../controllers/account")
 
 router.post('/create-account', accountController.createAccount)
+router.post('/transfers/:id', accountController.transfersAmount)
 
 module.exports = router

@@ -11,7 +11,7 @@ const createAccount = async (req, res, next) => {
         const account = new Account({
             name,
             email,
-            balance: 1000, 
+            balance: 1000,
             encryptPassword
         })
         account.save()
@@ -25,6 +25,21 @@ const createAccount = async (req, res, next) => {
     }
 }
 
+const transfersAmount = async (req, res) => {
+    const { id } = req.params
+    const { recipientsName, amount } = req.body
+    const name = recipientsName
+    const newBalance1 = Account.balance - amount
+    const newBalance2 = Account.balance + amount 
+    let transferredAmount = await Account.findByIdAndUpdate(id, (newBalance1) )
+    let amountReceived = await Account.findOneAndUpdate(name, (newBalance2) )
+        .then(() => {
+            res.status(201).json({ message: `TED completed` })
+        })
+        .catch((err) => { res.status(400).json(err) })
+}
+
 module.exports = {
-    createAccount
+    createAccount,
+    transfersAmount
 }
