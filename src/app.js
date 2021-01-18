@@ -8,7 +8,7 @@ dotenv.config()
 const accounts = require("./routes/account")
 const signin = require("./routes/signinRoute")
 
-mongoose.connect('mongodb://localhost/Stone-bank',
+mongoose.connect(`${process.env.DATABASE}`,
     {
         useNewUrlParser: true,
         useUnifiedTopology: true,
